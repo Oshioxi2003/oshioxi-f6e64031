@@ -82,7 +82,7 @@
   }
 
   .finshark-btn {
-    @apply w-full rounded-xl py-3 px-6 font-semibold text-sm text-primary-foreground transition-all duration-250 active:scale-[0.97] relative overflow-hidden;
+    @apply w-full rounded-xl py-3 px-6 font-semibold text-sm text-primary-foreground transition-all duration-200 active:scale-[0.97] relative overflow-hidden;
     background: linear-gradient(140deg, hsl(158 64% 52%), hsl(168 55% 42%));
     box-shadow:
       0 2px 8px hsl(158 64% 52% / 0.25),
