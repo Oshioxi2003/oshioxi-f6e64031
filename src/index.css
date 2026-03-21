@@ -71,7 +71,7 @@
   }
 
   .finshark-input {
-    @apply w-full rounded-xl border border-border/70 bg-input px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all duration-250;
+    @apply w-full rounded-xl border border-border/70 bg-input px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all duration-200;
     outline: 2px solid transparent;
   }
 
