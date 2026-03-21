@@ -1,14 +1,33 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import Logo from "@/components/Logo";
 import LanguageToggle from "@/components/LanguageToggle";
+import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+      toast({
+        title: "Đăng nhập thất bại",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      navigate("/dashboard");
+    }
+    setLoading(false);
   };
 
   return (
@@ -43,8 +62,8 @@ const Login = () => {
             />
           </div>
 
-          <button type="submit" className="finshark-btn">
-            Login
+          <button type="submit" className="finshark-btn" disabled={loading}>
+            {loading ? "Đang đăng nhập..." : "Login"}
           </button>
         </form>
 
