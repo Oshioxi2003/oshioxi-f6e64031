@@ -1,57 +1,26 @@
-import { Activity, Clock, Wifi } from "lucide-react";
+import { Activity, Clock, Wifi, ArrowUpRight } from "lucide-react";
 
-const StatusCards = () => {
-  const cards = [
-    {
-      icon: Activity,
-      label: "Trạng thái",
-      value: "Ready",
-      valueClass: "text-primary",
-      glow: "stat-glow-green",
-    },
-    {
-      icon: Clock,
-      label: "Cập nhật",
-      value: "05:56:26",
-      sub: "21/03/2026",
-      valueClass: "text-foreground",
-      glow: "",
-    },
-    {
-      icon: Wifi,
-      label: "Luồng dữ liệu",
-      value: "Hoạt động",
-      valueClass: "text-primary",
-      glow: "stat-glow-green",
-      pulse: true,
-    },
-  ];
-
-  return (
-    <div className="grid grid-cols-3 gap-3">
-      {cards.map((card, i) => (
-        <div
-          key={i}
-          className={`finshark-card p-4 flex items-center gap-3 ${card.glow}`}
-          style={{ animationDelay: `${i * 80}ms` }}
-        >
-          <div className="w-10 h-10 rounded-lg bg-secondary flex items-center justify-center shrink-0">
-            <card.icon className={`w-4.5 h-4.5 ${card.valueClass}`} />
-          </div>
-          <div>
-            <p className="text-[11px] text-muted-foreground uppercase tracking-wider">{card.label}</p>
-            <p className={`text-base font-bold ${card.valueClass} flex items-center gap-1.5`}>
-              {card.value}
-              {card.pulse && (
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse-soft" />
-              )}
-            </p>
-            {card.sub && <p className="text-[10px] text-muted-foreground">{card.sub}</p>}
-          </div>
-        </div>
-      ))}
+const StatusCards = () => (
+  <div className="flex items-center gap-2">
+    {/* Ready badge */}
+    <div className="flex items-center gap-2 bg-primary/8 border border-primary/15 rounded-2xl px-4 py-2.5">
+      <div className="w-2 h-2 rounded-full bg-primary animate-pulse-soft" />
+      <span className="text-xs font-semibold text-primary">Ready</span>
     </div>
-  );
-};
+
+    {/* Time badge */}
+    <div className="flex items-center gap-2 bg-secondary/50 border border-border/30 rounded-2xl px-4 py-2.5">
+      <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+      <span className="text-xs font-semibold text-foreground mono">05:56:26</span>
+      <span className="text-[10px] text-muted-foreground">21/03</span>
+    </div>
+
+    {/* Live badge */}
+    <div className="flex items-center gap-2 bg-primary/8 border border-primary/15 rounded-2xl px-4 py-2.5">
+      <Wifi className="w-3.5 h-3.5 text-primary" />
+      <span className="text-xs font-semibold text-primary">Live</span>
+    </div>
+  </div>
+);
 
 export default StatusCards;
