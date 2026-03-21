@@ -1,73 +1,32 @@
 import { useState } from "react";
-
-interface FilterState {
-  signal: string;
-  chain: string;
-  candle: string;
-  fromDate: string;
-  toDate: string;
-  stopLoss: string;
-  mMin: string;
-  mMax: string;
-  nMin: string;
-  nMax: string;
-  fomoMin: string;
-  fomoMax: string;
-  phMin: string;
-  phMax: string;
-  plMin: string;
-  plMax: string;
-  buyWin: string;
-  sellWin: string;
-  rrBuyMin: string;
-  rrBuyMax: string;
-  rrSellMin: string;
-  rrSellMax: string;
-  rrBuyMaxMin: string;
-  rrBuyMaxMax: string;
-  rrSellMaxMin: string;
-  rrSellMaxMax: string;
-}
+import { SlidersHorizontal, ChevronDown, ChevronUp, Search, RotateCcw, Download } from "lucide-react";
 
 interface AnalysisFiltersProps {
   onAnalyze: () => void;
 }
 
-const AnalysisFilters = ({ onAnalyze }: AnalysisFiltersProps) => {
-  const [showAdvanced, setShowAdvanced] = useState(true);
-  const [filters, setFilters] = useState<FilterState>({
-    signal: "TẤT CẢ", chain: "TẤT CẢ", candle: "TẤT CẢ",
-    fromDate: "", toDate: "", stopLoss: "",
-    mMin: "", mMax: "", nMin: "", nMax: "",
-    fomoMin: "", fomoMax: "", phMin: "", phMax: "",
-    plMin: "", plMax: "", buyWin: "TẤT CẢ", sellWin: "TẤT CẢ",
-    rrBuyMin: "", rrBuyMax: "", rrSellMin: "", rrSellMax: "",
-    rrBuyMaxMin: "", rrBuyMaxMax: "", rrSellMaxMin: "", rrSellMaxMax: "",
-  });
+type FilterKey = string;
 
-  const ButtonGroup = ({
-    label,
-    options,
-    value,
-    onChange,
-  }: {
-    label: string;
-    options: string[];
-    value: string;
-    onChange: (v: string) => void;
-  }) => (
+const AnalysisFilters = ({ onAnalyze }: AnalysisFiltersProps) => {
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [signal, setSignal] = useState("TẤT CẢ");
+  const [chain, setChain] = useState("TẤT CẢ");
+  const [candle, setCandle] = useState("TẤT CẢ");
+  const [buyWin, setBuyWin] = useState("TẤT CẢ");
+  const [sellWin, setSellWin] = useState("TẤT CẢ");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [stopLoss, setStopLoss] = useState("");
+
+  const ChipGroup = ({ label, options, value, onChange }: { label: string; options: string[]; value: string; onChange: (v: string) => void }) => (
     <div>
-      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{label}</p>
-      <div className="flex flex-wrap gap-1">
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-2">{label}</p>
+      <div className="flex flex-wrap gap-1.5">
         {options.map((opt) => (
           <button
             key={opt}
             onClick={() => onChange(opt)}
-            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors ${
-              value === opt
-                ? "bg-primary text-primary-foreground"
-                : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-            }`}
+            className={`chip ${value === opt ? "chip-active" : "chip-inactive"}`}
           >
             {opt}
           </button>
@@ -76,142 +35,93 @@ const AnalysisFilters = ({ onAnalyze }: AnalysisFiltersProps) => {
     </div>
   );
 
-  const RangeInput = ({ label, minKey, maxKey }: { label: string; minKey: keyof FilterState; maxKey: keyof FilterState }) => (
-    <div>
-      <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">{label}</p>
-      <div className="flex items-center gap-2">
-        <input
-          placeholder="Min"
-          value={filters[minKey]}
-          onChange={(e) => setFilters({ ...filters, [minKey]: e.target.value })}
-          className="finshark-input !py-1.5 text-xs !w-20"
-        />
-        <span className="text-xs text-muted-foreground">đến</span>
-        <input
-          placeholder="Max"
-          value={filters[maxKey]}
-          onChange={(e) => setFilters({ ...filters, [maxKey]: e.target.value })}
-          className="finshark-input !py-1.5 text-xs !w-20"
-        />
+  const RangeInput = ({ label }: { label: string }) => (
+    <div className="flex-1 min-w-[140px]">
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-2">{label}</p>
+      <div className="flex items-center gap-1.5">
+        <input placeholder="Min" className="finshark-input text-xs !py-1.5 !px-2.5" />
+        <span className="text-[10px] text-muted-foreground">—</span>
+        <input placeholder="Max" className="finshark-input text-xs !py-1.5 !px-2.5" />
       </div>
     </div>
   );
 
   return (
-    <div className="finshark-card p-6">
-      {/* Row 1: Signal, Chain, Candle */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5">
-        <ButtonGroup
-          label="Tín hiệu"
-          options={["TẤT CẢ", "BUY", "SELL", "NONE"]}
-          value={filters.signal}
-          onChange={(v) => setFilters({ ...filters, signal: v })}
-        />
-        <ButtonGroup
-          label="Chuỗi"
-          options={["TẤT CẢ", "a (<3)", "b (3-19)", "c (20+)"]}
-          value={filters.chain}
-          onChange={(v) => setFilters({ ...filters, chain: v })}
-        />
-        <ButtonGroup
-          label="Nến"
-          options={["TẤT CẢ", "Xanh", "Đỏ", "Doji"]}
-          value={filters.candle}
-          onChange={(v) => setFilters({ ...filters, candle: v })}
-        />
-      </div>
+    <div className="finshark-card overflow-hidden">
+      {/* Main filters */}
+      <div className="p-5 space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <ChipGroup label="Tín hiệu" options={["TẤT CẢ", "BUY", "SELL", "NONE"]} value={signal} onChange={setSignal} />
+          <ChipGroup label="Chuỗi" options={["TẤT CẢ", "a (<3)", "b (3-19)", "c (20+)"]} value={chain} onChange={setChain} />
+          <ChipGroup label="Nến" options={["TẤT CẢ", "Xanh", "Đỏ", "Doji"]} value={candle} onChange={setCandle} />
+        </div>
 
-      {/* Row 2: Date range + Stop loss */}
-      <div className="flex flex-wrap items-end gap-4 mb-4">
-        <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Từ</p>
-          <input
-            type="datetime-local"
-            value={filters.fromDate}
-            onChange={(e) => setFilters({ ...filters, fromDate: e.target.value })}
-            className="finshark-input !py-1.5 text-xs !w-auto"
-          />
-        </div>
-        <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Đến</p>
-          <input
-            type="datetime-local"
-            value={filters.toDate}
-            onChange={(e) => setFilters({ ...filters, toDate: e.target.value })}
-            className="finshark-input !py-1.5 text-xs !w-auto"
-          />
-        </div>
-        <button className="finshark-input !w-auto !py-1.5 px-4 text-xs text-center cursor-pointer hover:bg-secondary transition-colors">
-          Hôm nay
-        </button>
-        <button className="finshark-input !w-auto !py-1.5 px-4 text-xs text-center cursor-pointer hover:bg-secondary transition-colors">
-          7 ngày qua
-        </button>
-        <div>
-          <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">Dừng lỗ (SL)</p>
-          <input
-            placeholder="e.g. 2"
-            value={filters.stopLoss}
-            onChange={(e) => setFilters({ ...filters, stopLoss: e.target.value })}
-            className="finshark-input !py-1.5 text-xs !w-24"
-          />
+        {/* Date + SL */}
+        <div className="flex flex-wrap items-end gap-3">
+          <div className="flex-1 min-w-[180px]">
+            <label className="text-[11px] text-muted-foreground block mb-1.5">Từ</label>
+            <input type="datetime-local" value={fromDate} onChange={(e) => setFromDate(e.target.value)} className="finshark-input text-xs !py-2" />
+          </div>
+          <div className="flex-1 min-w-[180px]">
+            <label className="text-[11px] text-muted-foreground block mb-1.5">Đến</label>
+            <input type="datetime-local" value={toDate} onChange={(e) => setToDate(e.target.value)} className="finshark-input text-xs !py-2" />
+          </div>
+          <div className="flex gap-1">
+            <button className="chip chip-inactive">Hôm nay</button>
+            <button className="chip chip-inactive">7 ngày</button>
+          </div>
+          <div className="w-[100px]">
+            <label className="text-[11px] text-muted-foreground block mb-1.5">SL (Dừng lỗ)</label>
+            <input placeholder="e.g. 2" value={stopLoss} onChange={(e) => setStopLoss(e.target.value)} className="finshark-input text-xs !py-2" />
+          </div>
         </div>
       </div>
 
-      {/* Advanced filters toggle */}
+      {/* Advanced toggle */}
       <button
         onClick={() => setShowAdvanced(!showAdvanced)}
-        className="text-primary text-xs font-bold mb-4 flex items-center gap-1 hover:underline"
+        className="w-full flex items-center justify-center gap-1.5 py-2.5 text-xs text-muted-foreground hover:text-foreground bg-secondary/30 hover:bg-secondary/50 border-t border-border/40 transition-colors"
       >
-        Bộ lọc nâng cao {showAdvanced ? "▼" : "▲"}
+        <SlidersHorizontal className="w-3 h-3" />
+        Bộ lọc nâng cao
+        {showAdvanced ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
       </button>
 
+      {/* Advanced filters */}
       {showAdvanced && (
-        <div className="space-y-4">
-          {/* M, N, FOMO ranges */}
-          <div className="flex flex-wrap gap-6">
-            <RangeInput label="M" minKey="mMin" maxKey="mMax" />
-            <RangeInput label="N" minKey="nMin" maxKey="nMax" />
-            <RangeInput label="Điểm FOMO" minKey="fomoMin" maxKey="fomoMax" />
+        <div className="p-5 border-t border-border/40 bg-secondary/10 space-y-4 animate-fade-in">
+          <div className="flex flex-wrap gap-4">
+            <RangeInput label="M" />
+            <RangeInput label="N" />
+            <RangeInput label="Điểm FOMO" />
           </div>
-
-          {/* PH%, PL%, Buy/Sell Win */}
-          <div className="flex flex-wrap gap-6 items-end">
-            <RangeInput label="PH%" minKey="phMin" maxKey="phMax" />
-            <RangeInput label="PL%" minKey="plMin" maxKey="plMax" />
-            <ButtonGroup
-              label="Mua thắng"
-              options={["TẤT CẢ", "CÓ", "KHÔNG"]}
-              value={filters.buyWin}
-              onChange={(v) => setFilters({ ...filters, buyWin: v })}
-            />
-            <ButtonGroup
-              label="Bán thắng"
-              options={["TẤT CẢ", "CÓ", "KHÔNG"]}
-              value={filters.sellWin}
-              onChange={(v) => setFilters({ ...filters, sellWin: v })}
-            />
+          <div className="flex flex-wrap gap-4 items-end">
+            <RangeInput label="PH%" />
+            <RangeInput label="PL%" />
+            <ChipGroup label="Mua thắng" options={["TẤT CẢ", "CÓ", "KHÔNG"]} value={buyWin} onChange={setBuyWin} />
+            <ChipGroup label="Bán thắng" options={["TẤT CẢ", "CÓ", "KHÔNG"]} value={sellWin} onChange={setSellWin} />
           </div>
-
-          {/* RR ranges */}
-          <div className="flex flex-wrap gap-6">
-            <RangeInput label="RR Mua" minKey="rrBuyMin" maxKey="rrBuyMax" />
-            <RangeInput label="RR Bán" minKey="rrSellMin" maxKey="rrSellMax" />
-            <RangeInput label="RR Mua Max" minKey="rrBuyMaxMin" maxKey="rrBuyMaxMax" />
-            <RangeInput label="RR Bán Max" minKey="rrSellMaxMin" maxKey="rrSellMaxMax" />
+          <div className="flex flex-wrap gap-4">
+            <RangeInput label="RR Mua" />
+            <RangeInput label="RR Bán" />
+            <RangeInput label="RR Mua Max" />
+            <RangeInput label="RR Bán Max" />
           </div>
         </div>
       )}
 
-      {/* Action buttons */}
-      <div className="flex gap-3 mt-6">
-        <button onClick={onAnalyze} className="finshark-btn !w-auto px-8 !py-2.5 text-sm">
+      {/* Action bar */}
+      <div className="flex items-center gap-2 px-5 py-3 border-t border-border/40 bg-secondary/20">
+        <button onClick={onAnalyze} className="finshark-btn !w-auto !py-2 px-6 text-xs flex items-center gap-1.5">
+          <Search className="w-3.5 h-3.5" />
           Phân tích
         </button>
-        <button className="finshark-input !w-auto px-6 !py-2.5 text-sm text-center cursor-pointer hover:bg-secondary transition-colors">
-          Đặt lại
+        <button className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors" title="Đặt lại">
+          <RotateCcw className="w-4 h-4" />
         </button>
-        <button className="px-6 py-2.5 rounded-md text-sm font-medium border border-primary text-primary hover:bg-primary/10 transition-colors">
+        <div className="flex-1" />
+        <button className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs text-primary border border-primary/30 hover:bg-primary/10 transition-colors">
+          <Download className="w-3.5 h-3.5" />
           Xuất CSV
         </button>
       </div>

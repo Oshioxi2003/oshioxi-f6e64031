@@ -5,6 +5,7 @@ import DashboardNavbar from "@/components/DashboardNavbar";
 import AnalysisFilters from "@/components/AnalysisFilters";
 import AnalysisResults from "@/components/AnalysisResults";
 import DisclaimerFooter from "@/components/DisclaimerFooter";
+import { FlaskConical } from "lucide-react";
 
 const Analysis = () => {
   const navigate = useNavigate();
@@ -15,20 +16,14 @@ const Analysis = () => {
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/login");
-        return;
-      }
+      if (!session) { navigate("/login"); return; }
       setUserName(session.user.email?.split("@")[0] || "User");
       setLoading(false);
     };
-
     checkAuth();
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (!session) navigate("/login");
     });
-
     return () => subscription.unsubscribe();
   }, [navigate]);
 
@@ -44,10 +39,20 @@ const Analysis = () => {
     <div className="min-h-screen">
       <DashboardNavbar userName={userName} />
 
-      <main className="max-w-[1400px] mx-auto px-6 py-6">
-        <h1 className="text-2xl font-bold text-foreground mb-6">Phân tích xác suất</h1>
+      <main className="max-w-[1440px] mx-auto px-5 py-5">
+        <div className="flex items-center gap-2.5 mb-5 animate-fade-in">
+          <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+            <FlaskConical className="w-4 h-4 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-xl font-bold text-foreground">Phân tích xác suất</h1>
+            <p className="text-xs text-muted-foreground">Lọc và phân tích dữ liệu FOMO theo điều kiện</p>
+          </div>
+        </div>
 
-        <AnalysisFilters onAnalyze={() => setShowResults(true)} />
+        <div className="animate-fade-in" style={{ animationDelay: "80ms" }}>
+          <AnalysisFilters onAnalyze={() => setShowResults(true)} />
+        </div>
 
         {showResults && <AnalysisResults />}
 
