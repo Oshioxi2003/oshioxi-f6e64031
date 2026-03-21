@@ -18,22 +18,14 @@ const Dashboard = () => {
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/login");
-        return;
-      }
+      if (!session) { navigate("/login"); return; }
       setUserName(session.user.email?.split("@")[0] || "User");
       setLoading(false);
     };
-
     checkAuth();
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) {
-        navigate("/login");
-      }
+      if (!session) navigate("/login");
     });
-
     return () => subscription.unsubscribe();
   }, [navigate]);
 
@@ -49,55 +41,37 @@ const Dashboard = () => {
     <div className="min-h-screen">
       <DashboardNavbar userName={userName} />
 
-      <main className="max-w-[1400px] mx-auto px-6 py-6">
-        {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-primary">Biểu đồ FOMO Index</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            XAU/USD - Trực quan hóa chỉ số thị trường theo thời gian thực
-          </p>
+      <main className="max-w-[1440px] mx-auto px-5 py-5 space-y-4">
+        {/* Header row */}
+        <div className="flex items-end justify-between animate-fade-in">
+          <div>
+            <h1 className="text-xl font-bold text-foreground">FOMO Index</h1>
+            <p className="text-xs text-muted-foreground mt-0.5">XAU/USD · Thời gian thực</p>
+          </div>
+          <StatusCards />
         </div>
-
-        {/* Status cards */}
-        <StatusCards />
-
-        {/* Legend */}
-        <div className="flex items-center justify-center gap-6 mt-5">
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-3 rounded-sm" style={{ backgroundColor: "hsl(220, 70%, 55%)" }} />
-            <span className="text-xs text-foreground">Tích cực (+)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-3 rounded-sm" style={{ backgroundColor: "hsl(0, 65%, 50%)" }} />
-            <span className="text-xs text-foreground">Tiêu cực (-)</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-4 h-3 rounded-sm bg-muted" />
-            <span className="text-xs text-foreground">Trung lập (0)</span>
-          </div>
-        </div>
-
-        <p className="text-xs text-muted-foreground text-center mt-2 italic">
-          Các chỉ số chỉ mô tả trạng thái thị trường, không phải hướng dẫn giao dịch.
-        </p>
 
         {/* Time filter */}
-        <TimeFilter />
+        <div className="animate-fade-in" style={{ animationDelay: "100ms" }}>
+          <TimeFilter />
+        </div>
 
         {/* FOMO bar chart */}
-        <FOMOChart />
+        <div className="animate-fade-in" style={{ animationDelay: "150ms" }}>
+          <FOMOChart />
+        </div>
 
-        {/* M & N section */}
-        <div className="mt-8">
+        {/* M & N */}
+        <div className="animate-fade-in" style={{ animationDelay: "200ms" }}>
           <MNCharts />
         </div>
 
-        {/* Bottom section: streak + recent data */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-          <div className="finshark-card p-5">
+        {/* Bottom: streak + recent */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 animate-fade-in" style={{ animationDelay: "250ms" }}>
+          <div className="finshark-card p-4">
             <StreakCounter />
           </div>
-          <div className="finshark-card p-5">
+          <div className="finshark-card p-4">
             <RecentDataTable />
           </div>
         </div>
