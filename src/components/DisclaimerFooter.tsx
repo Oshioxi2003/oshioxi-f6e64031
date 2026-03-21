@@ -1,21 +1,17 @@
+import { AlertTriangle } from "lucide-react";
+
 const DisclaimerFooter = () => (
-  <footer className="mt-10 py-6 border-t border-border text-center">
-    <p className="text-xs text-destructive font-bold mb-1">
-      TUYÊN BỐ MIỄN TRỪ:{" "}
-      <span className="font-normal text-muted-foreground">
-        Tất cả dữ liệu, chỉ số và trực quan hóa trên trang web này{" "}
-      </span>
-      <span className="underline text-destructive/80">
-        chỉ mang tính chất tham khảo và phục vụ mục đích nghiên cứu
-      </span>
-      <span className="font-normal text-muted-foreground">.</span>
-    </p>
-    <p className="text-[11px] text-muted-foreground">
-      Website không cung cấp tư vấn đầu tư, khuyến nghị giao dịch hay tín hiệu mua bán bất kỳ công cụ tài chính nào.
-    </p>
-    <p className="text-[11px] text-muted-foreground">
-      Người dùng hoàn toàn tự chịu trách nhiệm về các quyết định của mình.
-    </p>
+  <footer className="mt-8 py-5 border-t border-border/40">
+    <div className="flex items-start gap-2.5 max-w-2xl mx-auto">
+      <AlertTriangle className="w-4 h-4 text-warning shrink-0 mt-0.5" />
+      <div>
+        <p className="text-[11px] text-muted-foreground leading-relaxed">
+          <span className="text-warning font-medium">Tuyên bố miễn trừ:</span>{" "}
+          Tất cả dữ liệu và trực quan hóa trên trang này chỉ mang tính chất tham khảo.
+          Website không cung cấp tư vấn đầu tư hay khuyến nghị giao dịch.
+        </p>
+      </div>
+    </div>
   </footer>
 );
 

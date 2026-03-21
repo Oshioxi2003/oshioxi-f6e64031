@@ -1,84 +1,65 @@
+import { Flame } from "lucide-react";
+
 const StreakCounter = () => {
   const historyData = [
-    { endTime: "2026-03-20 12:56:37", bias: "Tích cực", length: 53, totalFomo: 25.2401, priceDiff: 42.61 },
-    { endTime: "2026-03-20 01:11:56", bias: "Tiêu cực", length: 76, totalFomo: -16.0645, priceDiff: 91.26 },
-    { endTime: "2026-03-19 07:06:56", bias: "Tiêu cực", length: 93, totalFomo: -14.186, priceDiff: 36.19 },
-    { endTime: "2026-03-18 13:11:58", bias: "Tiêu cực", length: 24, totalFomo: 0.0177, priceDiff: 21.76 },
-    { endTime: "2026-03-18 07:06:34", bias: "Tiêu cực", length: 61, totalFomo: -5.3052, priceDiff: 12.98 },
-    { endTime: "2026-03-17 13:37:11", bias: "Tích cực", length: 60, totalFomo: 17.5964, priceDiff: 28.14 },
+    { endTime: "20/03 12:56", bias: "Tích cực", length: 53, totalFomo: 25.24, priceDiff: 42.61 },
+    { endTime: "20/03 01:11", bias: "Tiêu cực", length: 76, totalFomo: -16.06, priceDiff: 91.26 },
+    { endTime: "19/03 07:06", bias: "Tiêu cực", length: 93, totalFomo: -14.19, priceDiff: 36.19 },
+    { endTime: "18/03 13:11", bias: "Tiêu cực", length: 24, totalFomo: 0.02, priceDiff: 21.76 },
+    { endTime: "18/03 07:06", bias: "Tiêu cực", length: 61, totalFomo: -5.31, priceDiff: 12.98 },
   ];
 
   return (
     <div>
-      <h3 className="text-foreground font-bold text-center mb-4">
-        Bộ đếm chuỗi xu hướng (Liên tiếp 20+)
-      </h3>
+      <div className="flex items-center gap-2 mb-4">
+        <Flame className="w-4 h-4 text-primary" />
+        <h3 className="text-sm font-semibold text-foreground">Chuỗi xu hướng</h3>
+      </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6">
-        {/* Positive streak */}
-        <div className="finshark-card p-4 text-center border-primary/30">
-          <h4 className="text-primary font-bold text-sm mb-3">Chuỗi Tích cực</h4>
-          <div className="flex justify-center gap-8">
-            <div>
-              <p className="text-xs text-muted-foreground">ĐỘ DÀI</p>
-              <p className="text-2xl font-bold text-foreground">0</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">TỔNG FOMO</p>
-              <p className="text-2xl font-bold text-foreground">0.0000</p>
-            </div>
+      {/* Streak cards */}
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        <div className="rounded-lg bg-primary/5 border border-primary/15 p-3">
+          <p className="text-[10px] text-muted-foreground uppercase mb-1">Tích cực</p>
+          <div className="flex items-baseline gap-3">
+            <span className="text-xl font-bold text-foreground tabular-nums">0</span>
+            <span className="text-xs text-muted-foreground">chuỗi</span>
           </div>
-          <span className="inline-block mt-2 text-[10px] px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-400">
-            Not reached 20 (0/20)
-          </span>
+          <div className="mt-1.5 w-full h-1 bg-secondary rounded-full overflow-hidden">
+            <div className="h-full bg-primary/30 rounded-full" style={{ width: "0%" }} />
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-1">0/20 để kích hoạt</p>
         </div>
 
-        {/* Negative streak */}
-        <div className="finshark-card p-4 text-center border-destructive/30">
-          <h4 className="text-destructive font-bold text-sm mb-3">Chuỗi Tiêu cực</h4>
-          <div className="flex justify-center gap-8">
-            <div>
-              <p className="text-xs text-muted-foreground">ĐỘ DÀI</p>
-              <p className="text-2xl font-bold text-foreground">43</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">TỔNG FOMO</p>
-              <p className="text-2xl font-bold text-destructive">-8.5008</p>
-            </div>
+        <div className="rounded-lg bg-destructive/5 border border-destructive/15 p-3">
+          <p className="text-[10px] text-muted-foreground uppercase mb-1">Tiêu cực</p>
+          <div className="flex items-baseline gap-3">
+            <span className="text-xl font-bold text-foreground tabular-nums">43</span>
+            <span className="chip chip-active text-[9px] !px-2 !py-0.5 !bg-primary !text-primary-foreground">ACTIVE</span>
           </div>
-          <span className="inline-block mt-2 text-[10px] px-3 py-1 rounded-full bg-green-500/20 text-green-400">
-            ACTIVE (20+)
-          </span>
+          <div className="mt-1.5 w-full h-1 bg-secondary rounded-full overflow-hidden">
+            <div className="h-full bg-destructive rounded-full" style={{ width: "100%" }} />
+          </div>
+          <p className="text-[10px] text-destructive mt-1 tabular-nums">FOMO: -8.50</p>
         </div>
       </div>
 
-      {/* History table */}
-      <h4 className="text-foreground font-bold text-center text-sm mb-3">Lịch sử chuỗi hoàn thành</h4>
-      <div className="max-h-[300px] overflow-y-auto">
-        <table className="w-full text-sm">
-          <thead className="sticky top-0">
-            <tr className="border-b border-border bg-card">
-              <th className="text-left py-2 px-3 text-primary text-xs font-medium">END TIME (VN)</th>
-              <th className="text-left py-2 px-3 text-primary text-xs font-medium">BIAS</th>
-              <th className="text-right py-2 px-3 text-primary text-xs font-medium">STREAK LENGTH</th>
-              <th className="text-right py-2 px-3 text-primary text-xs font-medium">TOTAL FOMO</th>
-              <th className="text-right py-2 px-3 text-primary text-xs font-medium">PRICE DIFF</th>
-            </tr>
-          </thead>
-          <tbody>
-            {historyData.map((row, i) => (
-              <tr key={i} className="border-b border-border/50 hover:bg-secondary/30 transition-colors">
-                <td className="py-2 px-3 text-foreground">{row.endTime}</td>
-                <td className={`py-2 px-3 font-medium ${row.bias === "Tích cực" ? "text-primary" : "text-destructive"}`}>
-                  {row.bias}
-                </td>
-                <td className="py-2 px-3 text-right text-foreground">{row.length}</td>
-                <td className="py-2 px-3 text-right text-foreground">{row.totalFomo}</td>
-                <td className="py-2 px-3 text-right text-foreground">{row.priceDiff}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* History */}
+      <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-2">Lịch sử</p>
+      <div className="space-y-1 max-h-[180px] overflow-y-auto scroll-thin">
+        {historyData.map((row, i) => (
+          <div key={i} className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-secondary/40 transition-colors text-xs">
+            <span className="text-muted-foreground w-[80px] shrink-0 tabular-nums">{row.endTime}</span>
+            <span className={`w-[56px] shrink-0 font-medium ${row.bias === "Tích cực" ? "text-primary" : "text-destructive"}`}>
+              {row.bias}
+            </span>
+            <span className="text-foreground tabular-nums">{row.length}</span>
+            <span className="text-muted-foreground mx-1">·</span>
+            <span className={`tabular-nums ${row.totalFomo >= 0 ? "text-primary" : "text-destructive"}`}>
+              {row.totalFomo > 0 ? "+" : ""}{row.totalFomo}
+            </span>
+            <span className="ml-auto text-muted-foreground tabular-nums">Δ{row.priceDiff}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
