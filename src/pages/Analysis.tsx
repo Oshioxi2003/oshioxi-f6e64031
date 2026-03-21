@@ -29,8 +29,11 @@ const Analysis = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex flex-col items-center justify-center gap-3">
+        <div className="w-10 h-10 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+          <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+        <p className="text-xs text-muted-foreground">Đang tải...</p>
       </div>
     );
   }
@@ -39,14 +42,16 @@ const Analysis = () => {
     <div className="min-h-screen">
       <DashboardNavbar userName={userName} />
 
-      <main className="max-w-[1440px] mx-auto px-5 py-5">
-        <div className="flex items-center gap-2.5 mb-5 animate-fade-in">
-          <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
-            <FlaskConical className="w-4 h-4 text-primary" />
+      <main className="max-w-[1440px] mx-auto px-6 py-6">
+        <div className="flex items-center gap-3 mb-6 animate-fade-in">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary/15 to-primary/5 border border-primary/15 flex items-center justify-center">
+            <FlaskConical className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-foreground">Phân tích xác suất</h1>
-            <p className="text-xs text-muted-foreground">Lọc và phân tích dữ liệu FOMO theo điều kiện</p>
+            <h1 className="text-2xl font-extrabold text-foreground tracking-tight">
+              Phân tích <span className="gradient-text">xác suất</span>
+            </h1>
+            <p className="text-xs text-muted-foreground mt-0.5">Lọc và phân tích dữ liệu FOMO theo điều kiện</p>
           </div>
         </div>
 

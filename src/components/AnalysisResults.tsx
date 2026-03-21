@@ -1,4 +1,4 @@
-import { TrendingUp, TrendingDown, Minus, Info } from "lucide-react";
+import { TrendingUp, TrendingDown, Minus, Info, BarChart3 } from "lucide-react";
 
 const AnalysisResults = () => {
   const statsData = [
@@ -25,48 +25,53 @@ const AnalysisResults = () => {
   ];
 
   const signalColor = (s: string) =>
-    s === "SELL" ? "text-destructive" : s === "BUY" ? "text-primary" : "text-muted-foreground";
+    s === "SELL" ? "text-destructive" : s === "BUY" ? "text-primary" : "text-muted-foreground/60";
 
   return (
-    <div className="mt-5 space-y-4 animate-fade-in">
-      {/* Summary strip */}
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-muted-foreground">Kết quả:</span>
-        <span className="text-sm font-bold text-foreground tabular-nums">14,331</span>
+    <div className="mt-6 space-y-5 animate-fade-in">
+      {/* Summary */}
+      <div className="flex items-center gap-2">
+        <BarChart3 className="w-4 h-4 text-primary" />
+        <span className="text-sm font-bold text-foreground">Kết quả:</span>
+        <span className="text-sm font-extrabold gradient-text mono">14,331</span>
         <span className="text-xs text-muted-foreground">bản ghi</span>
       </div>
 
       {/* Win rate cards */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="finshark-card p-5 text-center stat-glow-green">
-          <TrendingUp className="w-5 h-5 text-primary mx-auto mb-2" />
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Mua thắng</p>
-          <p className="text-3xl font-bold text-primary tabular-nums">9.13<span className="text-lg">%</span></p>
-          <p className="text-[11px] text-muted-foreground mt-1 tabular-nums">1,309 / 14,331</p>
+      <div className="grid grid-cols-3 gap-4">
+        <div className="finshark-card p-6 text-center stat-glow-green relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-primary/3 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <TrendingUp className="w-6 h-6 text-primary mx-auto mb-3" />
+          <p className="section-title mb-2">Mua thắng</p>
+          <p className="text-4xl font-extrabold gradient-text mono tracking-tighter">9.13<span className="text-xl">%</span></p>
+          <p className="text-[11px] text-muted-foreground mt-2 mono">1,309 / 14,331</p>
         </div>
-        <div className="finshark-card p-5 text-center stat-glow-red">
-          <TrendingDown className="w-5 h-5 text-destructive mx-auto mb-2" />
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Bán thắng</p>
-          <p className="text-3xl font-bold text-destructive tabular-nums">8.44<span className="text-lg">%</span></p>
-          <p className="text-[11px] text-muted-foreground mt-1 tabular-nums">1,209 / 14,331</p>
+        <div className="finshark-card p-6 text-center stat-glow-red relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-destructive/3 rounded-full -translate-y-1/2 translate-x-1/2" />
+          <TrendingDown className="w-6 h-6 text-destructive mx-auto mb-3" />
+          <p className="section-title mb-2">Bán thắng</p>
+          <p className="text-4xl font-extrabold gradient-text-red mono tracking-tighter">8.44<span className="text-xl">%</span></p>
+          <p className="text-[11px] text-muted-foreground mt-2 mono">1,209 / 14,331</p>
         </div>
-        <div className="finshark-card p-5 text-center">
-          <Minus className="w-5 h-5 text-muted-foreground mx-auto mb-2" />
-          <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-1">Không thắng</p>
-          <p className="text-3xl font-bold text-foreground tabular-nums">82.43<span className="text-lg">%</span></p>
-          <p className="text-[11px] text-muted-foreground mt-1 tabular-nums">11,813 / 14,331</p>
+        <div className="finshark-card p-6 text-center relative overflow-hidden">
+          <Minus className="w-6 h-6 text-muted-foreground/40 mx-auto mb-3" />
+          <p className="section-title mb-2">Không thắng</p>
+          <p className="text-4xl font-extrabold text-foreground mono tracking-tighter">82.43<span className="text-xl">%</span></p>
+          <p className="text-[11px] text-muted-foreground mt-2 mono">11,813 / 14,331</p>
         </div>
       </div>
 
-      {/* Statistics table */}
+      {/* Stats table */}
       <div className="finshark-card overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-border/40">
-          <Info className="w-3.5 h-3.5 text-primary" />
-          <span className="text-xs font-semibold text-foreground">Thống kê nến tiếp theo</span>
+        <div className="flex items-center gap-2.5 px-5 py-4 border-b border-border/30">
+          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Info className="w-3.5 h-3.5 text-primary" />
+          </div>
+          <span className="text-sm font-bold text-foreground">Thống kê nến tiếp theo</span>
         </div>
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border/30">
+            <tr className="border-b border-border/20">
               <th className="table-header text-left">Chỉ số</th>
               <th className="table-header text-right">Trung bình</th>
               <th className="table-header text-right">Trung vị</th>
@@ -76,18 +81,18 @@ const AnalysisResults = () => {
           </thead>
           <tbody>
             {statsData.map((row, i) => (
-              <tr key={i} className="border-b border-border/20 hover:bg-secondary/20 transition-colors">
-                <td className="data-cell font-medium text-foreground">{row.label}</td>
+              <tr key={i} className="border-b border-border/10 hover:bg-secondary/15 transition-colors duration-150">
+                <td className="data-cell font-semibold text-foreground">{row.label}</td>
                 {row.placeholder ? (
-                  <td colSpan={4} className="data-cell text-center text-muted-foreground/60 italic text-xs">
+                  <td colSpan={4} className="data-cell text-center text-muted-foreground/40 italic text-xs">
                     Nhập SL rồi nhấn Phân tích
                   </td>
                 ) : (
                   <>
-                    <td className="data-cell text-right tabular-nums text-foreground">{row.avg}</td>
-                    <td className="data-cell text-right tabular-nums text-primary">{row.median}</td>
-                    <td className="data-cell text-right tabular-nums text-muted-foreground">{row.min}</td>
-                    <td className="data-cell text-right tabular-nums text-primary">{row.max}</td>
+                    <td className="data-cell text-right mono text-foreground">{row.avg}</td>
+                    <td className="data-cell text-right mono text-primary font-medium">{row.median}</td>
+                    <td className="data-cell text-right mono text-muted-foreground">{row.min}</td>
+                    <td className="data-cell text-right mono text-primary font-medium">{row.max}</td>
                   </>
                 )}
               </tr>
@@ -98,14 +103,14 @@ const AnalysisResults = () => {
 
       {/* Data table */}
       <div className="finshark-card overflow-hidden">
-        <div className="flex items-center gap-2 px-4 py-3 border-b border-border/40">
-          <span className="text-xs font-semibold text-foreground">Dữ liệu chi tiết</span>
-          <span className="text-[10px] text-muted-foreground ml-1">200 bản ghi</span>
+        <div className="flex items-center gap-2.5 px-5 py-4 border-b border-border/30">
+          <span className="text-sm font-bold text-foreground">Dữ liệu chi tiết</span>
+          <span className="text-[10px] text-muted-foreground/60 bg-secondary/40 rounded-full px-2 py-0.5 font-semibold">200 bản ghi</span>
         </div>
         <div className="overflow-x-auto scroll-thin">
           <table className="w-full text-xs whitespace-nowrap">
             <thead>
-              <tr className="border-b border-border/30">
+              <tr className="border-b border-border/20">
                 {["Thời gian", "Giá", "Tín hiệu", "FOMO", "Chuỗi", "M", "N", "NC↑", "NC↓", "PH%", "PL%", "Mua", "Bán"].map((h) => (
                   <th key={h} className="table-header text-left">{h}</th>
                 ))}
@@ -113,22 +118,22 @@ const AnalysisResults = () => {
             </thead>
             <tbody>
               {tableData.map((row, i) => (
-                <tr key={i} className="border-b border-border/10 hover:bg-secondary/20 transition-colors">
-                  <td className="data-cell tabular-nums text-muted-foreground">{row.time}</td>
-                  <td className="data-cell tabular-nums font-medium text-foreground">{row.price}</td>
-                  <td className={`data-cell font-bold ${signalColor(row.signal)}`}>{row.signal}</td>
-                  <td className={`data-cell tabular-nums ${row.fomo >= 0 ? "text-primary" : "text-destructive"}`}>
+                <tr key={i} className="border-b border-border/5 hover:bg-secondary/15 transition-colors duration-150">
+                  <td className="data-cell mono text-muted-foreground text-[11px]">{row.time}</td>
+                  <td className="data-cell mono font-bold text-foreground">{row.price}</td>
+                  <td className={`data-cell font-extrabold ${signalColor(row.signal)}`}>{row.signal}</td>
+                  <td className={`data-cell mono font-semibold ${row.fomo >= 0 ? "text-primary" : "text-destructive"}`}>
                     {row.fomo > 0 ? "+" : ""}{row.fomo}
                   </td>
                   <td className="data-cell text-foreground">{row.chain}</td>
-                  <td className="data-cell tabular-nums text-muted-foreground">{row.m}</td>
-                  <td className="data-cell tabular-nums text-muted-foreground">{row.n}</td>
-                  <td className="data-cell tabular-nums text-muted-foreground">{row.ncH}</td>
-                  <td className="data-cell tabular-nums text-muted-foreground">{row.ncL}</td>
-                  <td className="data-cell tabular-nums text-foreground">{row.ph}</td>
-                  <td className="data-cell tabular-nums text-foreground">{row.pl}</td>
-                  <td className="data-cell text-muted-foreground">{row.bw}</td>
-                  <td className="data-cell text-muted-foreground">{row.sw}</td>
+                  <td className="data-cell mono text-muted-foreground">{row.m}</td>
+                  <td className="data-cell mono text-muted-foreground">{row.n}</td>
+                  <td className="data-cell mono text-muted-foreground">{row.ncH}</td>
+                  <td className="data-cell mono text-muted-foreground">{row.ncL}</td>
+                  <td className="data-cell mono text-foreground">{row.ph}</td>
+                  <td className="data-cell mono text-foreground">{row.pl}</td>
+                  <td className="data-cell text-muted-foreground/50">{row.bw}</td>
+                  <td className="data-cell text-muted-foreground/50">{row.sw}</td>
                 </tr>
               ))}
             </tbody>

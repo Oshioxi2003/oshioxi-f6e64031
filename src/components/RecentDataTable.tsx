@@ -1,4 +1,4 @@
-import { Clock } from "lucide-react";
+import { Clock, ArrowDown, ArrowUp, Minus } from "lucide-react";
 
 const RecentDataTable = () => {
   const data = [
@@ -14,39 +14,38 @@ const RecentDataTable = () => {
     { day: "21/03", time: "04:46", price: 4498, trend: "Trung lập", fomo: 0.89 },
   ];
 
-  const trendColor = (t: string) =>
-    t === "Tiêu cực" ? "text-destructive" :
-    t === "Tích cực" ? "text-primary" : "text-muted-foreground";
-
-  const TrendDot = ({ trend }: { trend: string }) => (
-    <span className={`inline-block w-1.5 h-1.5 rounded-full mr-1.5 ${
-      trend === "Tiêu cực" ? "bg-destructive" :
-      trend === "Tích cực" ? "bg-primary" : "bg-muted-foreground"
-    }`} />
-  );
+  const TrendIcon = ({ trend }: { trend: string }) => {
+    if (trend === "Tiêu cực") return <ArrowDown className="w-3 h-3 text-destructive" />;
+    if (trend === "Tích cực") return <ArrowUp className="w-3 h-3 text-primary" />;
+    return <Minus className="w-3 h-3 text-muted-foreground/50" />;
+  };
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-4">
-        <Clock className="w-4 h-4 text-primary" />
-        <h3 className="text-sm font-semibold text-foreground">Dữ liệu gần đây</h3>
+      <div className="flex items-center gap-2.5 mb-5">
+        <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+          <Clock className="w-3.5 h-3.5 text-primary" />
+        </div>
+        <h3 className="text-sm font-bold text-foreground">Dữ liệu gần đây</h3>
       </div>
 
-      <div className="max-h-[320px] overflow-y-auto scroll-thin space-y-0.5">
+      <div className="max-h-[340px] overflow-y-auto scroll-thin space-y-0.5">
         {data.map((row, i) => (
           <div
             key={i}
-            className="flex items-center gap-4 rounded-lg px-3 py-2 hover:bg-secondary/40 transition-colors text-xs"
+            className="flex items-center rounded-xl px-3 py-2.5 hover:bg-secondary/30 transition-colors duration-200 text-xs group"
           >
-            <span className="text-muted-foreground tabular-nums w-[70px] shrink-0">
-              {row.day} {row.time}
+            <span className="text-muted-foreground mono text-[11px] w-[70px] shrink-0">
+              {row.time}
             </span>
-            <span className="text-foreground font-medium tabular-nums w-[40px]">{row.price}</span>
-            <span className={`flex items-center w-[72px] shrink-0 ${trendColor(row.trend)}`}>
-              <TrendDot trend={row.trend} />
-              {row.trend}
-            </span>
-            <span className={`ml-auto tabular-nums font-medium ${
+
+            <span className="text-foreground font-bold mono text-[12px] w-[45px] shrink-0">{row.price}</span>
+
+            <div className="w-6 h-6 rounded-lg bg-secondary/40 flex items-center justify-center mx-2">
+              <TrendIcon trend={row.trend} />
+            </div>
+
+            <span className={`ml-auto mono text-[12px] font-bold ${
               row.fomo >= 0 ? "text-primary" : "text-destructive"
             }`}>
               {row.fomo > 0 ? "+" : ""}{row.fomo.toFixed(2)}

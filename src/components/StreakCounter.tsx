@@ -1,4 +1,4 @@
-import { Flame } from "lucide-react";
+import { Flame, Zap } from "lucide-react";
 
 const StreakCounter = () => {
   const historyData = [
@@ -11,53 +11,56 @@ const StreakCounter = () => {
 
   return (
     <div>
-      <div className="flex items-center gap-2 mb-4">
-        <Flame className="w-4 h-4 text-primary" />
-        <h3 className="text-sm font-semibold text-foreground">Chuỗi xu hướng</h3>
+      <div className="flex items-center gap-2.5 mb-5">
+        <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+          <Flame className="w-3.5 h-3.5 text-primary" />
+        </div>
+        <h3 className="text-sm font-bold text-foreground">Chuỗi xu hướng</h3>
       </div>
 
-      {/* Streak cards */}
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="rounded-lg bg-primary/5 border border-primary/15 p-3">
-          <p className="text-[10px] text-muted-foreground uppercase mb-1">Tích cực</p>
-          <div className="flex items-baseline gap-3">
-            <span className="text-xl font-bold text-foreground tabular-nums">0</span>
-            <span className="text-xs text-muted-foreground">chuỗi</span>
+      {/* Streak mini-cards */}
+      <div className="grid grid-cols-2 gap-3 mb-5">
+        <div className="rounded-2xl bg-gradient-to-br from-primary/6 to-transparent border border-primary/12 p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Tích cực</span>
           </div>
-          <div className="mt-1.5 w-full h-1 bg-secondary rounded-full overflow-hidden">
-            <div className="h-full bg-primary/30 rounded-full" style={{ width: "0%" }} />
+          <p className="text-2xl font-extrabold text-foreground mono">0</p>
+          <div className="mt-2.5 w-full h-1.5 bg-secondary rounded-full overflow-hidden">
+            <div className="h-full rounded-full bg-primary/20 transition-all duration-500" style={{ width: "0%" }} />
           </div>
-          <p className="text-[10px] text-muted-foreground mt-1">0/20 để kích hoạt</p>
+          <p className="text-[10px] text-muted-foreground mt-1.5 mono">0 / 20</p>
         </div>
 
-        <div className="rounded-lg bg-destructive/5 border border-destructive/15 p-3">
-          <p className="text-[10px] text-muted-foreground uppercase mb-1">Tiêu cực</p>
-          <div className="flex items-baseline gap-3">
-            <span className="text-xl font-bold text-foreground tabular-nums">43</span>
-            <span className="chip chip-active text-[9px] !px-2 !py-0.5 !bg-primary !text-primary-foreground">ACTIVE</span>
+        <div className="rounded-2xl bg-gradient-to-br from-destructive/6 to-transparent border border-destructive/12 p-4">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Tiêu cực</span>
+            <span className="flex items-center gap-1 text-[9px] font-bold text-primary bg-primary/12 rounded-full px-2 py-0.5">
+              <Zap className="w-2.5 h-2.5" /> ACTIVE
+            </span>
           </div>
-          <div className="mt-1.5 w-full h-1 bg-secondary rounded-full overflow-hidden">
-            <div className="h-full bg-destructive rounded-full" style={{ width: "100%" }} />
+          <p className="text-2xl font-extrabold text-foreground mono">43</p>
+          <div className="mt-2.5 w-full h-1.5 bg-secondary rounded-full overflow-hidden">
+            <div className="h-full rounded-full bg-destructive transition-all duration-500" style={{ width: "100%" }} />
           </div>
-          <p className="text-[10px] text-destructive mt-1 tabular-nums">FOMO: -8.50</p>
+          <p className="text-[10px] text-destructive mt-1.5 mono font-medium">FOMO: −8.50</p>
         </div>
       </div>
 
       {/* History */}
-      <p className="text-[11px] text-muted-foreground uppercase tracking-wider mb-2">Lịch sử</p>
-      <div className="space-y-1 max-h-[180px] overflow-y-auto scroll-thin">
+      <span className="section-title">Lịch sử hoàn thành</span>
+      <div className="space-y-0.5 mt-2.5 max-h-[160px] overflow-y-auto scroll-thin">
         {historyData.map((row, i) => (
-          <div key={i} className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-secondary/40 transition-colors text-xs">
-            <span className="text-muted-foreground w-[80px] shrink-0 tabular-nums">{row.endTime}</span>
-            <span className={`w-[56px] shrink-0 font-medium ${row.bias === "Tích cực" ? "text-primary" : "text-destructive"}`}>
-              {row.bias}
+          <div key={i} className="flex items-center rounded-xl px-3 py-2.5 hover:bg-secondary/30 transition-colors duration-200 text-xs group">
+            <span className="text-muted-foreground mono w-[78px] shrink-0 text-[11px]">{row.endTime}</span>
+            <span className={`w-[52px] shrink-0 font-bold ${row.bias === "Tích cực" ? "text-primary" : "text-destructive"}`}>
+              {row.bias === "Tích cực" ? "↑" : "↓"} {row.length}
             </span>
-            <span className="text-foreground tabular-nums">{row.length}</span>
-            <span className="text-muted-foreground mx-1">·</span>
-            <span className={`tabular-nums ${row.totalFomo >= 0 ? "text-primary" : "text-destructive"}`}>
+            <span className={`mono text-[11px] ${row.totalFomo >= 0 ? "text-primary" : "text-destructive"}`}>
               {row.totalFomo > 0 ? "+" : ""}{row.totalFomo}
             </span>
-            <span className="ml-auto text-muted-foreground tabular-nums">Δ{row.priceDiff}</span>
+            <span className="ml-auto text-muted-foreground mono text-[11px] opacity-0 group-hover:opacity-100 transition-opacity">
+              Δ{row.priceDiff}
+            </span>
           </div>
         ))}
       </div>

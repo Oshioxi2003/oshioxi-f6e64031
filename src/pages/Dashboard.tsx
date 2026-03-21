@@ -31,8 +31,11 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen flex flex-col items-center justify-center gap-3">
+        <div className="w-10 h-10 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center">
+          <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+        <p className="text-xs text-muted-foreground">Đang tải...</p>
       </div>
     );
   }
@@ -41,23 +44,25 @@ const Dashboard = () => {
     <div className="min-h-screen">
       <DashboardNavbar userName={userName} />
 
-      <main className="max-w-[1440px] mx-auto px-5 py-5 space-y-4">
-        {/* Header row */}
-        <div className="flex items-end justify-between animate-fade-in">
+      <main className="max-w-[1440px] mx-auto px-6 py-6 space-y-5">
+        {/* Header */}
+        <div className="flex items-center justify-between animate-fade-in">
           <div>
-            <h1 className="text-xl font-bold text-foreground">FOMO Index</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">XAU/USD · Thời gian thực</p>
+            <h1 className="text-2xl font-extrabold text-foreground tracking-tight">
+              FOMO <span className="gradient-text">Index</span>
+            </h1>
+            <p className="text-xs text-muted-foreground mt-1">XAU/USD · Trực quan hóa thời gian thực</p>
           </div>
           <StatusCards />
         </div>
 
         {/* Time filter */}
-        <div className="animate-fade-in" style={{ animationDelay: "100ms" }}>
+        <div className="animate-fade-in" style={{ animationDelay: "80ms" }}>
           <TimeFilter />
         </div>
 
-        {/* FOMO bar chart */}
-        <div className="animate-fade-in" style={{ animationDelay: "150ms" }}>
+        {/* FOMO chart */}
+        <div className="animate-fade-in" style={{ animationDelay: "140ms" }}>
           <FOMOChart />
         </div>
 
@@ -66,12 +71,12 @@ const Dashboard = () => {
           <MNCharts />
         </div>
 
-        {/* Bottom: streak + recent */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 animate-fade-in" style={{ animationDelay: "250ms" }}>
-          <div className="finshark-card p-4">
+        {/* Bottom panels */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 animate-fade-in" style={{ animationDelay: "260ms" }}>
+          <div className="finshark-card p-5">
             <StreakCounter />
           </div>
-          <div className="finshark-card p-4">
+          <div className="finshark-card p-5">
             <RecentDataTable />
           </div>
         </div>
