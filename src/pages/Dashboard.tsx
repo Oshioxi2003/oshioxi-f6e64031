@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { useFomoData } from "@/hooks/useFomoData";
 import DashboardNavbar from "@/components/DashboardNavbar";
 import StatusCards from "@/components/StatusCards";
 import TimeFilter from "@/components/TimeFilter";
@@ -14,6 +15,16 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("User");
   const [loading, setLoading] = useState(true);
+
+  // Fetch real data from Twelve Data API
+  const { data: fomoData, isLoading: fomoLoading, isError: fomoError } = useFomoData({
+    interval: "5min",
+    outputsize: 200,
+    refetchInterval: 60_000, // refresh every 60s
+  });
+
+  const latestPrice = fomoData && fomoData.length > 0 ? fomoData[fomoData.length - 1].price : undefined;
+  const lastUpdated = fomoData && fomoData.length > 0 ? fomoData[fomoData.length - 1].time : undefined;
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -53,8 +64,20 @@ const Dashboard = () => {
             </h1>
             <p className="text-xs text-muted-foreground mt-1">XAU/USD · Trực quan hóa thời gian thực</p>
           </div>
-          <StatusCards />
+          <StatusCards
+            latestPrice={latestPrice}
+            isLoading={fomoLoading}
+            isError={fomoError}
+            lastUpdated={lastUpdated}
+          />
         </div>
+
+        {/* Error banner */}
+        {fomoError && (
+          <div className="animate-fade-in bg-destructive/10 border border-destructive/20 rounded-xl px-4 py-3 text-xs text-destructive font-medium">
+            ⚠️ Không thể kết nối Twelve Data API. Dữ liệu có thể không cập nhật.
+          </div>
+        )}
 
         {/* Time filter */}
         <div className="animate-fade-in" style={{ animationDelay: "80ms" }}>
@@ -63,12 +86,12 @@ const Dashboard = () => {
 
         {/* FOMO chart */}
         <div className="animate-fade-in" style={{ animationDelay: "140ms" }}>
-          <FOMOChart />
+          <FOMOChart data={fomoData} isLoading={fomoLoading} />
         </div>
 
         {/* M & N */}
         <div className="animate-fade-in" style={{ animationDelay: "200ms" }}>
-          <MNCharts />
+          <MNCharts data={fomoData} isLoading={fomoLoading} />
         </div>
 
         {/* Bottom panels */}
@@ -77,7 +100,7 @@ const Dashboard = () => {
             <StreakCounter />
           </div>
           <div className="finshark-card p-5">
-            <RecentDataTable />
+            <RecentDataTable data={fomoData} isLoading={fomoLoading} />
           </div>
         </div>
 

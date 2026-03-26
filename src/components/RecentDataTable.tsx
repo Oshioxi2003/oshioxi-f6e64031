@@ -1,18 +1,14 @@
-import { Clock, ArrowDown, ArrowUp, Minus } from "lucide-react";
+import { Clock, ArrowDown, ArrowUp, Minus, Loader2 } from "lucide-react";
+import type { FomoDataRow } from "@/hooks/useFomoData";
 
-const RecentDataTable = () => {
-  const data = [
-    { day: "21/03", time: "05:31", price: 4498, trend: "Tiêu cực", fomo: 0.89 },
-    { day: "21/03", time: "05:26", price: 4498, trend: "Trung lập", fomo: 0.89 },
-    { day: "21/03", time: "05:21", price: 4497, trend: "Trung lập", fomo: -0.7 },
-    { day: "21/03", time: "05:16", price: 4497, trend: "Trung lập", fomo: -2.12 },
-    { day: "21/03", time: "05:11", price: 4498, trend: "Trung lập", fomo: 0.89 },
-    { day: "21/03", time: "05:06", price: 4498, trend: "Trung lập", fomo: 0.89 },
-    { day: "21/03", time: "05:01", price: 4497, trend: "Tiêu cực", fomo: -1.01 },
-    { day: "21/03", time: "04:56", price: 4497, trend: "Trung lập", fomo: -1.66 },
-    { day: "21/03", time: "04:51", price: 4498, trend: "Trung lập", fomo: 0.89 },
-    { day: "21/03", time: "04:46", price: 4498, trend: "Trung lập", fomo: 0.89 },
-  ];
+interface RecentDataTableProps {
+  data?: FomoDataRow[];
+  isLoading?: boolean;
+}
+
+const RecentDataTable = ({ data, isLoading }: RecentDataTableProps) => {
+  // Take last 15 entries, reversed (newest first)
+  const rows = data ? [...data].reverse().slice(0, 15) : [];
 
   const TrendIcon = ({ trend }: { trend: string }) => {
     if (trend === "Tiêu cực") return <ArrowDown className="w-3 h-3 text-destructive" />;
@@ -27,32 +23,57 @@ const RecentDataTable = () => {
           <Clock className="w-3.5 h-3.5 text-primary" />
         </div>
         <h3 className="text-sm font-bold text-foreground">Dữ liệu gần đây</h3>
+        {rows.length > 0 && (
+          <span className="text-[10px] text-muted-foreground bg-secondary/40 rounded-full px-2 py-0.5 font-semibold">
+            {rows.length} bản ghi
+          </span>
+        )}
       </div>
 
-      <div className="max-h-[340px] overflow-y-auto scroll-thin space-y-0.5">
-        {data.map((row, i) => (
-          <div
-            key={i}
-            className="flex items-center rounded-xl px-3 py-2.5 hover:bg-secondary/30 transition-colors duration-200 text-xs group"
-          >
-            <span className="text-muted-foreground mono text-[11px] w-[70px] shrink-0">
-              {row.time}
-            </span>
+      {isLoading ? (
+        <div className="h-[200px] flex items-center justify-center">
+          <Loader2 className="w-5 h-5 text-primary animate-spin" />
+        </div>
+      ) : rows.length === 0 ? (
+        <div className="h-[200px] flex items-center justify-center text-xs text-muted-foreground">
+          Không có dữ liệu
+        </div>
+      ) : (
+        <div className="max-h-[340px] overflow-y-auto scroll-thin space-y-0.5">
+          {rows.map((row, i) => {
+            // Parse time from datetime string
+            const timeStr = row.time.length > 10 ? row.time.slice(11, 16) : row.time;
 
-            <span className="text-foreground font-bold mono text-[12px] w-[45px] shrink-0">{row.price}</span>
+            return (
+              <div
+                key={i}
+                className="flex items-center rounded-xl px-3 py-2.5 hover:bg-secondary/30 transition-colors duration-200 text-xs group"
+              >
+                <span className="text-muted-foreground mono text-[11px] w-[70px] shrink-0">
+                  {timeStr}
+                </span>
 
-            <div className="w-6 h-6 rounded-lg bg-secondary/40 flex items-center justify-center mx-2">
-              <TrendIcon trend={row.trend} />
-            </div>
+                <span className="text-foreground font-bold mono text-[12px] w-[65px] shrink-0">
+                  {row.price.toFixed(2)}
+                </span>
 
-            <span className={`ml-auto mono text-[12px] font-bold ${
-              row.fomo >= 0 ? "text-primary" : "text-destructive"
-            }`}>
-              {row.fomo > 0 ? "+" : ""}{row.fomo.toFixed(2)}
-            </span>
-          </div>
-        ))}
-      </div>
+                <div className="w-6 h-6 rounded-lg bg-secondary/40 flex items-center justify-center mx-2">
+                  <TrendIcon trend={row.trend} />
+                </div>
+
+                <span
+                  className={`ml-auto mono text-[12px] font-bold ${
+                    row.compression >= 0 ? "text-primary" : "text-destructive"
+                  }`}
+                >
+                  {row.compression > 0 ? "+" : ""}
+                  {row.compression.toFixed(4)}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };
