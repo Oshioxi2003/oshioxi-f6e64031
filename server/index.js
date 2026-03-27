@@ -183,6 +183,18 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// ==================== STATIC FILES (Production) ====================
+const path = require('path');
+const distPath = path.resolve(__dirname, '..', 'dist');
+
+// Serve Vite-built frontend
+app.use(express.static(distPath));
+
+// SPA fallback — send index.html for all non-API routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(distPath, 'index.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
   console.log(`🦈 FinShark API server running on http://localhost:${PORT}`);
