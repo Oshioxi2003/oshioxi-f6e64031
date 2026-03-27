@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Interval } from "@/lib/twelveDataApi";
 import type { ComputedRow } from "@/lib/macdEngine";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 export interface FomoDataRow extends ComputedRow {
   tradeSignal: "BUY" | "SELL" | "NONE";
