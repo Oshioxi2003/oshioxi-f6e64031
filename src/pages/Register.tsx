@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { authApi } from "@/integrations/auth/client";
 import LanguageToggle from "@/components/LanguageToggle";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Lock, User, ArrowRight, Gift } from "lucide-react";
@@ -25,12 +25,9 @@ const Register = () => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email, password,
-      options: { data: { full_name: fullName }, emailRedirectTo: window.location.origin },
-    });
+    const { error } = await authApi.register(email, password, fullName);
     if (error) {
-      toast({ title: "Đăng ký thất bại", description: error.message, variant: "destructive" });
+      toast({ title: "Đăng ký thất bại", description: error, variant: "destructive" });
     } else {
       toast({ title: "Thành công!", description: "Đăng nhập ngay bây giờ." });
       navigate("/login");

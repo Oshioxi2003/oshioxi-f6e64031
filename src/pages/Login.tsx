@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { authApi } from "@/integrations/auth/client";
 import LanguageToggle from "@/components/LanguageToggle";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, Lock, ArrowRight } from "lucide-react";
@@ -15,9 +15,9 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await authApi.login(email, password);
     if (error) {
-      toast({ title: "Đăng nhập thất bại", description: error.message, variant: "destructive" });
+      toast({ title: "Đăng nhập thất bại", description: error, variant: "destructive" });
     } else {
       navigate("/dashboard");
     }

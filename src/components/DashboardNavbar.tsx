@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { BarChart3, FlaskConical, LogOut, ChevronDown } from "lucide-react";
+import { authApi } from "@/integrations/auth/client";
+import { BarChart3, FlaskConical, LogOut } from "lucide-react";
 
 interface DashboardNavbarProps {
   userName?: string;
@@ -13,8 +13,8 @@ const DashboardNavbar = ({ userName = "User" }: DashboardNavbarProps) => {
   const navigate = useNavigate();
   const initial = userName.charAt(0).toUpperCase();
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
+    authApi.signOut();
     navigate("/login");
   };
 

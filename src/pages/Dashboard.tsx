@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { authApi } from "@/integrations/auth/client";
 import { useFomoData } from "@/hooks/useFomoData";
 import DashboardNavbar from "@/components/DashboardNavbar";
 import StatusCards from "@/components/StatusCards";
@@ -28,16 +28,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { session } = await authApi.getSession();
       if (!session) { navigate("/login"); return; }
       setUserName(session.user.email?.split("@")[0] || "User");
       setLoading(false);
     };
     checkAuth();
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { unsubscribe } = authApi.onAuthStateChange((_event, session) => {
       if (!session) navigate("/login");
     });
-    return () => subscription.unsubscribe();
+    return () => unsubscribe();
   }, [navigate]);
 
   if (loading) {
